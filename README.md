@@ -1,13 +1,3 @@
-```diff
-- Note: this project is no longer maintained
-```
-
-## UPDATE
-
-~~### https://github.com/richardghirst/PiBits/blob/master/PiFmDma/PiFmDma.c presents a rewrite using DMA, which uses much less CPU than this version. Please use that version in preference.~~
-
-This has been updated by the original authors to use DMA, as well as allow tuning and stereo.  Richard Hirst is no longer maintaining PiBits, and refers users to this solution.
-
 ## Turning the Raspberry Pi Into an FM Transmitter
 
 ### Steps to play sound:
@@ -15,9 +5,13 @@ This has been updated by the original authors to use DMA, as well as allow tunin
 *(Created by Oliver Mattos and Oskar Weigl. Code is GPL)*
 
 ```
-sudo python
->>> import PiFm
->>> PiFm.play_sound("sound.wav")
+Usage:   ./pifm wavfile.wav [freq] [sample rate] [stereo]
+
+Where wavfile is 16 bit 22.5kHz Stereo.  Set wavfile to '-' to use stdin.
+freq is in Mhz (default 103.3)
+sample rate of wav file in Hz
+
+Play an empty file to transmit silence
 ```
 
 Now connect a 20cm or so plain wire to GPIO 4 (which is pin 7 on [header P1](http://elinux.org/RPi_Low-level_peripherals#General_Purpose_Input.2FOutput_.28GPIO.29)) to act as an antenna, and tune an FM radio to 103.3Mhz
@@ -63,12 +57,12 @@ When testing, the signal only started to break up after we went through several 
 
 The python library calls a C program. The C program maps the Peripheral Bus (0x20000000) in physical memory into virtual address space using /dev/mem and mmap. To do this it needs root access, hence the sudo. Next it sets the clock generator module to enabled and sets it to output on GPIO4 (no other accessible pins can be used). It also sets the frequency to ~~100.0Mhz (provided from PLLD@500Mhz, divided by 5)~~ 103.3, which provides a carrier. At this point, radios will stop making a "fuzz" noise, and become silent.
 
-Modulation is done by adjusting the frequency using the fractional divider between 103.325Mhz and 103.275Mhz, which makes the audio signal. ~~The fractional divider doesn't have enough resolution to produce more than ~6 bit audio, but since the PI is very fast, we can do oversampling to provide about 9.5 bit audio by using 128 subsamples per real audio sample.~~ We were being naive with our subsampling algorithm - you can now get full 16 bit quality sound, and it even does FM pre-emphasis so that the result doesn't sound bass-heavy. 
+Modulation is done by adjusting the frequency using the fractional divider between 103.325Mhz and 103.275Mhz, which makes the audio signal. ~~The fractional divider doesn't have enough resolution to produce more than ~6 bit audio, but since the PI is very fast, we can do oversampling to provide about 9.5 bit audio by using 128 subsamples per real audio sample.~~ We were being naive with our subsampling algorithm - you can now get full 16 bit quality sound, and it even does FM pre-emphasis so that the result doesn't sound bass-heavy.
 
 ### Notes
 
-This is a copy of the updated documentation and code from 
-http://www.icrobotics.co.uk/wiki/index.php/Turning_the_Raspberry_Pi_Into_an_FM_Transmitter, 
+This is a copy of the updated documentation and code from
+http://www.icrobotics.co.uk/wiki/index.php/Turning_the_Raspberry_Pi_Into_an_FM_Transmitter,
 
 The only changes are removal of the download link (since the source can be downloaded here), and formatting in Github Markdown.
 
@@ -80,6 +74,6 @@ All rights of the original authors reserved.
 
 * http://blog.makezine.com/2012/12/10/raspberry-pi-as-an-fm-transmitter/?parent=Electronics
 
-* http://www.youtube.com/v/ekcdAX53-S8#! 
+* http://www.youtube.com/v/ekcdAX53-S8#!
 
 * https://github.com/richardghirst/PiBits/pull/18
