@@ -5,7 +5,7 @@
 *(Created by Oliver Mattos and Oskar Weigl. Code is GPL)*
 
 ```
-Usage:   ./pifm wavfile.wav [freq] [sample rate] [stereo]
+Usage:   ./pifm wavfile.wav [freq] [sample rate] [stereo] [volume]
 
 Where wavfile is 16 bit 22.5kHz Stereo.  Set wavfile to '-' to use stdin.
 freq is in Mhz (default 103.3)
